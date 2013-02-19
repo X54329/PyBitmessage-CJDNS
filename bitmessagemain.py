@@ -87,13 +87,13 @@ class outgoingSynSender(QThread):
                         resetTime = int(time.time())
                 self.alreadyAttemptedConnectionsList.append(HOST)
                 PORT, timeNodeLastSeen = knownNodes[self.streamNumber][HOST]
-                sock = socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
+                sock = socks.socksocket(socket.AF_INET6, socket.SOCK_STREAM)
                 sock.settimeout(20)
                 if config.get('bitmessagesettings', 'socksproxytype') == 'none':
                     printLock.acquire()
                     print 'Trying an outgoing connection to', HOST, ':', PORT
                     printLock.release()
-                    #sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    #sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
                 elif config.get('bitmessagesettings', 'socksproxytype') == 'SOCKS4a':
                     printLock.acquire()
                     print '(Using SOCKS4a) Trying an outgoing connection to', HOST, ':', PORT
@@ -186,7 +186,7 @@ class singleListener(QThread):
         print 'Listening for incoming connections.'
         HOST = '' # Symbolic name meaning all available interfaces
         PORT = config.getint('bitmessagesettings', 'port')
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
         #This option apparently avoids the TIME_WAIT state so that we can rebind faster
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         sock.bind((HOST, PORT))
