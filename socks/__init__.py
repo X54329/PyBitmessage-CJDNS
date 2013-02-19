@@ -112,10 +112,10 @@ class socksocket(socket.socket):
     """socksocket([family[, type[, proto]]]) -> socket object
     Open a SOCKS enabled socket. The parameters are the same as
     those of the standard socket init. In order for SOCKS to work,
-    you must specify family=AF_INET, type=SOCK_STREAM and proto=0.
+    you must specify family=AF_INET6, type=SOCK_STREAM and proto=0.
     """
 
-    def __init__(self, family=socket.AF_INET, type=socket.SOCK_STREAM, proto=0, _sock=None):
+    def __init__(self, family=socket.AF_INET6, type=socket.SOCK_STREAM, proto=0, _sock=None):
         _orgsocket.__init__(self, family, type, proto, _sock)
         if _defaultproxy != None:
             self.__proxy = _defaultproxy
@@ -205,7 +205,7 @@ class socksocket(socket.socket):
         # If the given destination address is an IP address, we'll
         # use the IPv4 address request even if remote resolving was specified.
         try:
-            ipaddr = socket.inet_aton(destaddr)
+            ipaddr = socket.AF_INET6(destaddr)
             req = req + chr(0x01).encode() + ipaddr
         except socket.error:
             # Well it's not an IP number,  so it's probably a DNS name.
@@ -215,7 +215,7 @@ class socksocket(socket.socket):
                 req = req + chr(0x03).encode() + chr(len(destaddr)).encode() + destaddr
             else:
                 # Resolve locally
-                ipaddr = socket.inet_aton(socket.gethostbyname(destaddr))
+                ipaddr = socket.AF_INET6(socket.gethostbyname(destaddr))
                 req = req + chr(0x01).encode() + ipaddr
         req = req + struct.pack(">H", destport)
         self.sendall(req)
@@ -273,14 +273,14 @@ class socksocket(socket.socket):
         # Check if the destination address provided is an IP address
         rmtrslv = False
         try:
-            ipaddr = socket.inet_aton(destaddr)
+            ipaddr = socket.AF_INET6(destaddr)
         except socket.error:
             # It's a DNS name. Check where it should be resolved.
             if self.__proxy[3]:
                 ipaddr = struct.pack("BBBB", 0x00, 0x00, 0x00, 0x01)
                 rmtrslv = True
             else:
-                ipaddr = socket.inet_aton(socket.gethostbyname(destaddr))
+                ipaddr = socket.AF_INET6(socket.gethostbyname(destaddr))
         # Construct the request packet
         req = struct.pack(">BBH", 0x04, 0x01, destport) + ipaddr
         # The username parameter is considered userid for SOCKS4
