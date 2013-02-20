@@ -4591,21 +4591,21 @@ if __name__ == "__main__":
         raise SystemExit
 
     #DNS bootstrap. This could be programmed to use the SOCKS proxy to do the DNS lookup some day but for now we will just rely on the entries in defaultKnownNodes.py. Hopefully either they are up to date or the user has run Bitmessage recently without SOCKS turned on and received good bootstrap nodes using that method.
-    if config.get('bitmessagesettings', 'socksproxytype') == 'none':
-        try:
-            for item in socket.getaddrinfo('bootstrap8080.bitmessage.org',80):
-                print 'Adding', item[4][0],'to knownNodes based on DNS boostrap method'
-                knownNodes[1][item[4][0]] = (8080,int(time.time()))
-        except:
-            print 'bootstrap8080.bitmessage.org DNS bootstraping failed.'
-        try:
-            for item in socket.getaddrinfo('bootstrap8444.bitmessage.org',80):
-                print 'Adding', item[4][0],'to knownNodes based on DNS boostrap method'
-                knownNodes[1][item[4][0]] = (8444,int(time.time()))
-        except:
-            print 'bootstrap8444.bitmessage.org DNS bootstrapping failed.'
-    else:
-        print 'DNS bootstrap skipped because SOCKS is used.'
+###    if config.get('bitmessagesettings', 'socksproxytype') == 'none':
+###        try:
+###            for item in socket.getaddrinfo('bootstrap8080.bitmessage.org',80):
+###                print 'Adding', item[4][0],'to knownNodes based on DNS boostrap method'
+###                knownNodes[1][item[4][0]] = (8080,int(time.time()))
+###        except:
+###            print 'bootstrap8080.bitmessage.org DNS bootstraping failed.'
+###        try:
+###            for item in socket.getaddrinfo('bootstrap8444.bitmessage.org',80):
+###                print 'Adding', item[4][0],'to knownNodes based on DNS boostrap method'
+###                knownNodes[1][item[4][0]] = (8444,int(time.time()))
+###        except:
+###            print 'bootstrap8444.bitmessage.org DNS bootstrapping failed.'
+###    else:
+###        print 'DNS bootstrap skipped because SOCKS is used###.'
 
     app = QtGui.QApplication(sys.argv)
     app.setStyleSheet("QStatusBar::item { border: 0px solid black }")
