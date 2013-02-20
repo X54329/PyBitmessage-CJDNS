@@ -1688,7 +1688,7 @@ class receiveDataThread(QThread):
             payload += pack('>I',timeLastReceivedMessageFromThisNode)
             payload += pack('>I',streamNumber)
             payload += pack('>q',services) #service bit flags offered by this node        
-            if len(HOST) ><4:
+            if len(HOST) <5:
                 payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(HOST)
             payload += pack('>H',port)#remote port
 
