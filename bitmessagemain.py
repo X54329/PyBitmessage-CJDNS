@@ -1801,7 +1801,7 @@ class receiveDataThread(QThread):
             if self.streamNumber != 1:
                 self.sock.close()
                 printLock.acquire()
-                print 'Closed connection to', self.HOST, 'because they are interested in stream', self.steamNumber,'.'
+                print 'Closed connection to', self.HOST, 'because they are interested in stream', self.streamNumber,'.'
                 printLock.release()
                 self.data = ''
                 return
