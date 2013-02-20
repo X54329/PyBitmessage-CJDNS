@@ -198,7 +198,7 @@ class singleListener(QThread):
             #We don't want to accept incoming connections if the user is using a SOCKS proxy. If the user eventually select proxy 'none' then this will start listening for connections.
             while config.get('bitmessagesettings', 'socksproxytype')[0:5] == 'SOCKS':
                 time.sleep(10)
-            a,(HOST,PORT) = sock.accept()
+            a,(HOST,PORT,nuthin1,nuthin2) = sock.accept()
             #Users are finding that if they run more than one node in the same network (thus with the same public IP), they can not connect with the second node. This is because this section of code won't accept the connection from the same IP. This problem will go away when the Bitmessage network grows beyond being tiny but in the mean time I'll comment out this code section.
             """while HOST in connectedHostsList:
                 print 'incoming connection is from a host in connectedHostsList (we are already connected to it). Ignoring it.'
@@ -1688,7 +1688,7 @@ class receiveDataThread(QThread):
             payload += pack('>I',timeLastReceivedMessageFromThisNode)
             payload += pack('>I',streamNumber)
             payload += pack('>q',services) #service bit flags offered by this node
-            payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_pton(AF_INET6,host)
+            #payload +=  '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_pton(AF_INET6,host)
             payload += pack('>H',port)#remote port
 
         payload = encodeVarint(numberOfAddressesInAddrMessage) + payload
@@ -1904,7 +1904,7 @@ class sendDataThread(QThread):
         payload += pack('>q',int(time.time()))
 
         payload += pack('>q',1) #boolservices of remote connection. How can I even know this for sure? This is probably ignored by the remote host.
-        payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_pton(AF_INET6,self.HOST)
+        #payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.(AF_INET6,self.HOST)
         payload += pack('>H',self.PORT)#remote IPv6 and port
 
         payload += pack('>q',1) #bitflags of the services I offer.
