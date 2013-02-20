@@ -1688,7 +1688,7 @@ class receiveDataThread(QThread):
             payload += pack('>I',timeLastReceivedMessageFromThisNode)
             payload += pack('>I',streamNumber)
             payload += pack('>q',services) #service bit flags offered by this node
-            payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.AF_INET6(host)
+            payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_pton(AF_INET6,host)
             payload += pack('>H',port)#remote port
 
         payload = encodeVarint(numberOfAddressesInAddrMessage) + payload
@@ -1904,7 +1904,7 @@ class sendDataThread(QThread):
         payload += pack('>q',int(time.time()))
 
         payload += pack('>q',1) #boolservices of remote connection. How can I even know this for sure? This is probably ignored by the remote host.
-        payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.AF_INET6(self.HOST)
+        payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_pton(AF_INET6,self.HOST)
         payload += pack('>H',self.PORT)#remote IPv6 and port
 
         payload += pack('>q',1) #bitflags of the services I offer.
