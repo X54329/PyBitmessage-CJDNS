@@ -1690,7 +1690,7 @@ class receiveDataThread(QThread):
             payload += pack('>q',services) #service bit flags offered by this node        
  #           if len(HOST) <5:
 #                payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(HOST)
-        payload += socket.inet_pton(AF_INET6,HOST)    
+        payload += socket.inet_pton(socket.AF_INET6,HOST)    
         payload += pack('>H',port)#remote port
 
         payload = encodeVarint(numberOfAddressesInAddrMessage) + payload
@@ -1742,7 +1742,7 @@ class receiveDataThread(QThread):
                 payload += pack('>q',1) #service bit flags offered by this node
 #                if len(HOST) < 5:
  #                   payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(HOST)
-                payload += socket.inet_pton(AF_INET6,HOST)   
+                payload += socket.inet_pton(socket.AF_INET6,HOST)   
                 payload += pack('>H',PORT)#remote port
         for HOST, value in addrsInChildStreamLeft.items():
             PORT, timeLastReceivedMessageFromThisNode = value
@@ -1753,7 +1753,7 @@ class receiveDataThread(QThread):
                 payload += pack('>q',1) #service bit flags offered by this node
  #               if len(HOST) < 5:
 #                    payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(HOST)
-            payload += socket.inet_pton(AF_INET6,HOST)   
+            payload += socket.inet_pton(socket.AF_INET6,HOST)   
             payload += pack('>H',PORT)#remote port
         for HOST, value in addrsInChildStreamRight.items():
             PORT, timeLastReceivedMessageFromThisNode = value
@@ -1764,7 +1764,7 @@ class receiveDataThread(QThread):
                 payload += pack('>q',1) #service bit flags offered by this node
 #               if len(HOST) <4:
 #                    payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(HOST)
-                payload += socket.inet_pton(AF_INET6,HOST)
+                payload += socket.inet_pton(socket.AF_INET6,HOST)
                 payload += pack('>H',PORT)#remote port
 
         payload = encodeVarint(numberOfAddressesInAddrMessage) + payload
@@ -1846,7 +1846,7 @@ class receiveDataThread(QThread):
 # left this commented out just in case we want to support ipv4 later
 #        if len(self.HOST) <5:
 #            payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(self.HOST)
-        payload += socket.inet_pton(AF_INET6,self.HOST)
+        payload += socket.inet_pton(socket.AF_INET6,self.HOST)
         payload += pack('>q',1) #boolservices offered by the remote node. This data is ignored by the remote host because how could We know what Their services are without them tell
         payload += pack('>H',self.PORT)#remote 
 
@@ -1917,7 +1917,7 @@ class sendDataThread(QThread):
 #commented out incase we want ipv4 support again later 
 #       if len(self.HOST) <5:
   #          payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(self.HOST)
-        payload += socket.inet_pton(AF_INET6,self.HOST)
+        payload += socket.inet_pton(socket.AF_INET6,self.HOST)
         payload += pack('>H',self.PORT)#remote IPv6 and port
 
         payload += pack('>q',1) #bitflags of the services I offer.
