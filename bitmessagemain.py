@@ -1688,9 +1688,10 @@ class receiveDataThread(QThread):
             payload += pack('>I',timeLastReceivedMessageFromThisNode)
             payload += pack('>I',streamNumber)
             payload += pack('>q',services) #service bit flags offered by this node        
-            if len(HOST) <5:
-                payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(HOST)
-            payload += pack('>H',port)#remote port
+ #           if len(HOST) <5:
+#                payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(HOST)
+        payload += socket.inet_pton(HOST)    
+        payload += pack('>H',port)#remote port
 
         payload = encodeVarint(numberOfAddressesInAddrMessage) + payload
         datatosend = '\xE9\xBE\xB4\xD9addr\x00\x00\x00\x00\x00\x00\x00\x00'
@@ -1739,9 +1740,10 @@ class receiveDataThread(QThread):
                 payload +=  pack('>I',timeLastReceivedMessageFromThisNode)
                 payload += pack('>I',self.streamNumber)
                 payload += pack('>q',1) #service bit flags offered by this node
-                if len(HOST) < 5:
-                    payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(HOST)
-                payload += pack('>H',PORT)#remote port
+#                if len(HOST) < 5:
+ #                   payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(HOST)
+             payload += socket.inet_pton(HOST)   
+             payload += pack('>H',PORT)#remote port
         for HOST, value in addrsInChildStreamLeft.items():
             PORT, timeLastReceivedMessageFromThisNode = value
             if timeLastReceivedMessageFromThisNode > (int(time.time())- maximumAgeOfNodesThatIAdvertiseToOthers): #If it is younger than 3 hours old..
@@ -1749,9 +1751,10 @@ class receiveDataThread(QThread):
                 payload += pack('>I',timeLastReceivedMessageFromThisNode)
                 payload += pack('>I',self.streamNumber*2)
                 payload += pack('>q',1) #service bit flags offered by this node
-                if len(HOST) < 5:
-                    payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(HOST)
-                payload += pack('>H',PORT)#remote port
+ #               if len(HOST) < 5:
+#                    payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(HOST)
+            payload += socket.inet_pton(HOST)   
+            payload += pack('>H',PORT)#remote port
         for HOST, value in addrsInChildStreamRight.items():
             PORT, timeLastReceivedMessageFromThisNode = value
             if timeLastReceivedMessageFromThisNode > (int(time.time())- maximumAgeOfNodesThatIAdvertiseToOthers): #If it is younger than 3 hours old..
@@ -1759,8 +1762,9 @@ class receiveDataThread(QThread):
                 payload += pack('>I',timeLastReceivedMessageFromThisNode)
                 payload += pack('>I',(self.streamNumber*2)+1)
                 payload += pack('>q',1) #service bit flags offered by this node
-                if len(HOST) <4:
-                    payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(HOST)
+#               if len(HOST) <4:
+#                    payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(HOST)
+                payload += socket.inet_pton(HOST)
                 payload += pack('>H',PORT)#remote port
 
         payload = encodeVarint(numberOfAddressesInAddrMessage) + payload
@@ -1839,9 +1843,10 @@ class receiveDataThread(QThread):
         payload += pack('>L',1) #protocol version.
         payload += pack('>q',1) #bitflags of the services I offer.
         payload += pack('>q',int(time.time()))
-        if len(self.HOST) <5:
-            payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(self.HOST)
-
+# left this commented out just in case we want to support ipv4 later
+#        if len(self.HOST) <5:
+#            payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(self.HOST)
+        payload += socket.inet_pton(self.HOST)
         payload += pack('>q',1) #boolservices offered by the remote node. This data is ignored by the remote host because how could We know what Their services are without them tell
         payload += pack('>H',self.PORT)#remote 
 
@@ -1909,8 +1914,10 @@ class sendDataThread(QThread):
         payload += pack('>q',int(time.time()))
 
         payload += pack('>q',1) #boolservices of remote connection. How can I even know this for sure? This is probably ignored by the remote host.            
-        if len(self.HOST) <5:
-            payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(self.HOST)
+#commented out incase we want ipv4 support again later 
+#       if len(self.HOST) <5:
+  #          payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(self.HOST)
+        payload += socket.inet_pton(self.HOST)
         payload += pack('>H',self.PORT)#remote IPv6 and port
 
         payload += pack('>q',1) #bitflags of the services I offer.
