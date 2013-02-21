@@ -1742,8 +1742,8 @@ class receiveDataThread(QThread):
                 payload += pack('>q',1) #service bit flags offered by this node
 #                if len(HOST) < 5:
  #                   payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(HOST)
-             payload += socket.inet_pton(HOST)   
-             payload += pack('>H',PORT)#remote port
+                payload += socket.inet_pton(HOST)   
+                payload += pack('>H',PORT)#remote port
         for HOST, value in addrsInChildStreamLeft.items():
             PORT, timeLastReceivedMessageFromThisNode = value
             if timeLastReceivedMessageFromThisNode > (int(time.time())- maximumAgeOfNodesThatIAdvertiseToOthers): #If it is younger than 3 hours old..
