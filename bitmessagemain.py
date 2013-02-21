@@ -418,7 +418,7 @@ class receiveDataThread(QThread):
         print 'broadcasting addr from within connectionFullyEstablished function.'
         printLock.release()
         self.broadcastaddr([(int(time.time()), self.streamNumber, 1, self.HOST, remoteNodeIncomingPort)]) #This lets all of our peers know about this new node.
-        self.sendaddr() #This is one large addr message to this one peer.
+#        self.sendaddr() #This is one large addr message to this one peer.
         if connectionsCount[self.streamNumber] > 150:
             printLock.acquire()
             print 'We are connected to too many people. Closing connection.'
@@ -1691,8 +1691,8 @@ class receiveDataThread(QThread):
             payload += pack('>q',services) #service bit flags offered by this node        
  #           if len(HOST) <5:
 #                payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(HOST)
-        payload += socket.inet_pton(socket.AF_INET6,host)    
-        payload += pack('>H',port)#remote port
+            payload += socket.inet_pton(socket.AF_INET6,host)    
+            payload += pack('>H',port)#remote port
 
         payload = encodeVarint(numberOfAddressesInAddrMessage) + payload
         datatosend = '\xE9\xBE\xB4\xD9addr\x00\x00\x00\x00\x00\x00\x00\x00'
