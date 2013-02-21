@@ -1654,8 +1654,8 @@ class receiveDataThread(QThread):
                     printLock.release()
                 break #giving up on unpacking any more. We should still be connected however.
             #print 'Within recaddr(): IP', recaddrIP, ', Port', recaddrPort, ', i', i
-            hostFromAddrMessage = socket.inet_ntoa(self.data[52+lengthOfNumberOfAddresses+(34*i):56+lengthOfNumberOfAddresses+(34*i)])
-            #print 'hostFromAddrMessage', hostFromAddrMessage
+            hostFromAddrMessage = socket.inet_ntop(AF_INET6,self.data[52+lengthOfNumberOfAddresses+(34*i):56+lengthOfNumberOfAddresses+(34*i)])
+            print 'hostFromAddrMessage', hostFromAddrMessage
             if hostFromAddrMessage == '127.0.0.1':
                 continue
             timeSomeoneElseReceivedMessageFromThisNode, = unpack('>I',self.data[24+lengthOfNumberOfAddresses+(34*i):28+lengthOfNumberOfAddresses+(34*i)]) #This is the 'time' value in the received addr message.
@@ -1787,7 +1787,7 @@ class receiveDataThread(QThread):
         elif not self.verackSent: #There is a potential exploit if we don't check to make sure that we have not already received and accepted a version message: An attacker could connect directly to us, send a msg message with the ackdata set to an invalid version message which would cause us to close the connection to the attacker thus proving that we were able to decode the message. Checking the connectionIsOrWasFullyEstablished variable would also suffice.
             self.remoteProtocolVersion, = unpack('>L',self.data[24:28])
             #print 'remoteProtocolVersion', self.remoteProtocolVersion
-            self.myExternalIP = socket.inet_ntoa(self.data[64:68])
+            self.myExternalIP = socket.inet_ntop(AF_INET6,self.data[52:68])
             #print 'myExternalIP', self.myExternalIP
             self.remoteNodeIncomingPort, = unpack('>H',self.data[94:96])
             #print 'remoteNodeIncomingPort', self.remoteNodeIncomingPort
