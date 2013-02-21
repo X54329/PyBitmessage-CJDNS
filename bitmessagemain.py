@@ -1690,7 +1690,7 @@ class receiveDataThread(QThread):
             payload += pack('>q',services) #service bit flags offered by this node        
  #           if len(HOST) <5:
 #                payload += '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xFF\xFF' + socket.inet_aton(HOST)
-        payload += socket.inet_pton(socket.AF_INET6,HOST)    
+        payload += socket.inet_pton(socket.AF_INET6,host)    
         payload += pack('>H',port)#remote port
 
         payload = encodeVarint(numberOfAddressesInAddrMessage) + payload
