@@ -330,7 +330,7 @@ class receiveDataThread(QThread):
                         elif remoteCommand == 'verack\x00\x00\x00\x00\x00\x00':
                             self.recverack()
                         elif remoteCommand == 'addr\x00\x00\x00\x00\x00\x00\x00\x00' and self.connectionIsOrWasFullyEstablished:
-                            self.recaddr()
+###                         self.recaddr()
                         elif remoteCommand == 'getpubkey\x00\x00\x00' and self.connectionIsOrWasFullyEstablished:
                             self.recgetpubkey()
                         elif remoteCommand == 'pubkey\x00\x00\x00\x00\x00\x00' and self.connectionIsOrWasFullyEstablished:
